@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { motion, useInView } from "framer-motion";
+import { useInView } from "framer-motion";
 
 export interface StatItem {
   value: number;
@@ -38,7 +38,6 @@ function StatBox({ item }: { item: StatItem }) {
   useEffect(() => {
     if (!inView) return;
 
-    let start = 0;
     const end = item.value;
     const duration = 2000; // 2 seconds
     let startTime: number | null = null;

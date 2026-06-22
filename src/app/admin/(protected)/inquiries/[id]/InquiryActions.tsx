@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { updateInquiryStatusAction, deleteInquiryAction } from "@/app/actions/inquiries";
-import { Loader2, Trash2, Check, RefreshCw, AlertCircle } from "lucide-react";
+import { Loader2, Trash2, Check, AlertCircle } from "lucide-react";
 
 interface InquiryActionsProps {
   id: string;

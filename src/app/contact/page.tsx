@@ -232,7 +232,7 @@ export default function ContactPage() {
                       {office.address}
                     </p>
                   </div>
-                  <div className="border-t border-white/5 pt-4 flex flex-col gap-2 text-2xs text-slate-350">
+                  <div className="border-t border-white/5 pt-4 flex flex-col gap-2 text-2xs text-slate-300">
                     <div><strong>Phone:</strong> {office.phone}</div>
                     <div><strong>Email:</strong> {office.email}</div>
                     <div><strong>Hours:</strong> {office.hours}</div>

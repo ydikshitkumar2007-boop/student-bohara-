@@ -169,7 +169,7 @@ export default function FacilitiesPage() {
               <h3 className="font-title text-2xl sm:text-3xl font-extrabold text-white">
                 Quality Verification Certifications
               </h3>
-              <p className="text-slate-350 text-sm sm:text-base leading-relaxed">
+              <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
                 Bohara Group operates with total compliance to global manufacturing standard frameworks. Our quality management systems are ISO audited, and our supply lines are certified for food contact safety and environmental sustainability.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">

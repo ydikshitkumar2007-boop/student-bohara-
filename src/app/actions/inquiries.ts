@@ -49,7 +49,7 @@ export async function submitInquiryAction(formData: {
     revalidatePath("/admin/inquiries");
 
     return { success: true };
-  } catch (error: any) {
+  } catch (error) {
     console.error("Failed to submit inquiry:", error);
     if (error instanceof z.ZodError) {
       return { success: false, error: error.issues[0]?.message || "Validation failed." };
@@ -80,8 +80,7 @@ export async function adminLoginAction(formData: FormData) {
   // Set session cookie
   await setSessionCookie();
 
-  // Redirect to dashboard page
-  redirect("/admin/dashboard");
+  return { success: true };
 }
 
 export async function adminLogoutAction() {

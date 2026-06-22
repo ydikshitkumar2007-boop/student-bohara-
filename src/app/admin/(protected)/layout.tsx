@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { verifyAdminSession } from "@/lib/auth";
 import { adminLogoutAction } from "@/app/actions/inquiries";
 import { 
@@ -7,8 +8,7 @@ import {
   Inbox, 
   LogOut, 
   ShieldAlert,
-  Building,
-  Menu
+  Building
 } from "lucide-react";
 
 export default async function AdminLayout({
@@ -18,9 +18,8 @@ export default async function AdminLayout({
 }) {
   const isAuthenticated = await verifyAdminSession();
 
-  // If not authenticated (like on `/admin/login`), render page contents directly without admin sidebar shell
   if (!isAuthenticated) {
-    return <div className="min-h-screen bg-slate-950 text-slate-100">{children}</div>;
+    redirect("/admin/login");
   }
 
   return (
@@ -42,14 +41,14 @@ export default async function AdminLayout({
           <nav className="p-4 flex flex-col gap-2">
             <Link
               href="/admin/dashboard"
-              className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-350 hover:text-white hover:bg-white/5 transition-all duration-200"
+              className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-200"
             >
               <LayoutDashboard className="w-4 h-4 text-amber-500" />
               Dashboard
             </Link>
             <Link
               href="/admin/inquiries"
-              className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-350 hover:text-white hover:bg-white/5 transition-all duration-200"
+              className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-200"
             >
               <Inbox className="w-4 h-4 text-amber-500" />
               Inquiries
@@ -57,7 +56,7 @@ export default async function AdminLayout({
             <Link
               href="/"
               target="_blank"
-              className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-350 hover:text-white hover:bg-white/5 transition-all duration-200"
+              className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-white/5 transition-all duration-200"
             >
               <Building className="w-4 h-4 text-slate-500" />
               View Website

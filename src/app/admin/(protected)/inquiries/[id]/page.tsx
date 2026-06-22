@@ -5,12 +5,10 @@ import { prisma } from "@/lib/db";
 import { InquiryActions } from "./InquiryActions";
 import { 
   ArrowLeft, 
-  User, 
   Mail, 
   Building, 
   Briefcase, 
   Calendar, 
-  Clock,
   MessageSquare
 } from "lucide-react";
 

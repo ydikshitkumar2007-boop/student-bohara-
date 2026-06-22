@@ -14,7 +14,6 @@ import {
   Globe, 
   ShieldCheck, 
   Truck, 
-  ArrowUpRight, 
   ArrowRight,
   Layers,
   ChevronRight,
@@ -174,7 +173,7 @@ export function IndustriesClient() {
           </motion.h1>
 
           <motion.p
-            className="text-slate-350 text-base sm:text-lg lg:text-xl max-w-2xl leading-relaxed"
+            className="text-slate-300 text-base sm:text-lg lg:text-xl max-w-2xl leading-relaxed"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2, ease: animEase }}

@@ -162,7 +162,7 @@ export default function ProductsPage() {
               <h3 className="font-title text-2xl sm:text-3xl font-extrabold text-white mb-6">
                 Verifiable Metallurgy and Fiber Standards
               </h3>
-              <p className="text-slate-350 text-sm sm:text-base leading-relaxed mb-6">
+              <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
                 All production lines are governed by real-time computerized verification. For metallurgy, this means verifying SUS 304 food-grade specifications. For textiles, it means ensuring combed card yarn counts remain trace-compliant under OEKO-TEX and GOTS standards.
               </p>
               <ul className="flex flex-col gap-3 list-none p-0 text-sm text-slate-400">

@@ -11,7 +11,7 @@ function getEncryptionKey(): Buffer {
 }
 
 // Encrypt payload to a tamper-proof session string
-export function encryptSession(payload: Record<string, any>): string {
+export function encryptSession(payload: Record<string, unknown>): string {
   const key = getEncryptionKey();
   const iv = crypto.randomBytes(12); // GCM recommended IV length is 12 bytes
   const cipher = crypto.createCipheriv("aes-256-gcm", key, iv);
@@ -24,7 +24,7 @@ export function encryptSession(payload: Record<string, any>): string {
 }
 
 // Decrypt session string to a JS object
-export function decryptSession(sessionStr: string): Record<string, any> | null {
+export function decryptSession(sessionStr: string): Record<string, unknown> | null {
   try {
     const parts = sessionStr.split(":");
     if (parts.length !== 3) return null;

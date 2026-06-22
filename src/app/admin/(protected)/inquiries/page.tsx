@@ -11,8 +11,6 @@ import {
   Briefcase 
 } from "lucide-react";
 
-type InquiryStatus = "NEW" | "IN_PROGRESS" | "RESPONDED" | "CLOSED";
-
 export const dynamic = "force-dynamic";
 
 interface PageProps {
@@ -166,7 +164,7 @@ export default async function InquiriesPage({ searchParams }: PageProps) {
                     <td className="py-4 px-4 text-right">
                       <Link
                         href={`/admin/inquiries/${inq.id}`}
-                        className="bg-transparent border border-white/10 hover:border-amber-500/30 text-xs font-bold text-slate-350 hover:text-amber-500 px-3.5 py-1.5 rounded transition-all duration-200"
+                        className="bg-transparent border border-white/10 hover:border-amber-500/30 text-xs font-bold text-slate-300 hover:text-amber-500 px-3.5 py-1.5 rounded transition-all duration-200"
                       >
                         Review
                       </Link>

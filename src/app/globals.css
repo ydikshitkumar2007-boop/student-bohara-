@@ -41,6 +41,9 @@
   --accent-light: #f59e0b;
   --accent-glow: rgba(217, 119, 6, 0.15);
   
+  --text-main: #f3f4f6;
+  --text-muted: #9ca3af;
+  
   --glass-bg: rgba(17, 24, 39, 0.65);
   --glass-border: rgba(255, 255, 255, 0.08);
   --glass-shadow: rgba(0, 0, 0, 0.4);
@@ -60,7 +63,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: var(--bg-primary);
-  color: var(--text-main);
+  color: var(--color-text-main);
   min-height: 100%;
   line-height: 1.6;
   overflow-x: hidden;

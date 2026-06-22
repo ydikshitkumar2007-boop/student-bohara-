@@ -17,19 +17,14 @@ export default function LoginPage() {
     const formData = new FormData(e.currentTarget);
     try {
       const result = await adminLoginAction(formData);
-      // If a result is returned, it means authentication failed (otherwise redirect happens)
       if (result && !result.success) {
         setError(result.error || "Authentication failed.");
         setIsSubmitting(false);
+      } else if (result && result.success) {
+        // Clean client-side redirection
+        window.location.href = "/admin/dashboard";
       }
-    } catch (err: any) {
-      // Next.js redirect throws an internal error which is caught here,
-      // but in Next.js Server Actions, standard redirects do not need handling if they run successfully.
-      // If it's a real network error:
-      if (err.message && err.message.includes("NEXT_REDIRECT")) {
-        // Safe to ignore, Next.js handles redirecting
-        return;
-      }
+    } catch (err) {
       console.error("Login submission error:", err);
       setError("An unexpected error occurred. Please try again.");
       setIsSubmitting(false);
@@ -80,7 +75,7 @@ export default function LoginPage() {
               <div className="flex justify-between items-center">
                 <label
                   htmlFor="password"
-                  className="text-xs font-bold text-slate-350 uppercase tracking-wider"
+                  className="text-xs font-bold text-slate-300 uppercase tracking-wider"
                 >
                   Admin Access Password
                 </label>
