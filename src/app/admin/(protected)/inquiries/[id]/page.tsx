@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { InquiryActions } from "./InquiryActions";
+import { DashboardErrorState } from "@/components/custom/DashboardErrorState";
 import { 
   ArrowLeft, 
   Mail, 
@@ -26,9 +27,28 @@ export default async function InquiryDetailPage({ params }: PageProps) {
   const id = resolvedParams.id;
 
   // 1. Fetch details from PostgreSQL via Prisma
-  const inquiry = await prisma.inquiry.findUnique({
-    where: { id },
-  });
+  let inquiry = null;
+  let dbError: string | null = null;
+
+  try {
+    console.log(`InquiryDetailPage [Start]: Querying inquiry details for ID: ${id}...`);
+    inquiry = await prisma.inquiry.findUnique({
+      where: { id },
+    });
+    console.log("InquiryDetailPage [Success]: Inquiry details retrieved successfully.");
+  } catch (err) {
+    console.error(`InquiryDetailPage [Error]: Query failed for ID: ${id}`, err);
+    dbError = err instanceof Error ? err.message : String(err);
+  }
+
+  if (dbError) {
+    return (
+      <DashboardErrorState
+        title="Database Connection Error"
+        message={`An error occurred while retrieving inquiry details. Technical Details: ${dbError}`}
+      />
+    );
+  }
 
   if (!inquiry) {
     notFound();

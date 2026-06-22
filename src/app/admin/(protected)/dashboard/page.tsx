@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
+import { Inquiry } from "@prisma/client";
 import { 
   Inbox, 
   AlertCircle, 
@@ -13,20 +14,78 @@ import {
   Briefcase
 } from "lucide-react";
 
+import { DashboardErrorState } from "@/components/custom/DashboardErrorState";
+
 export const dynamic = "force-dynamic";
 
+function checkEnvironmentVariables() {
+  const missing: string[] = [];
+  if (!process.env.DATABASE_URL) missing.push("DATABASE_URL");
+  if (!process.env.ADMIN_PASSWORD) missing.push("ADMIN_PASSWORD");
+  if (!process.env.NEXT_PUBLIC_APP_URL) missing.push("NEXT_PUBLIC_APP_URL");
+
+  if (missing.length > 0) {
+    throw new Error(
+      `Missing required environment variables: ${missing.join(", ")}`
+    );
+  }
+}
+
 export default async function DashboardPage() {
-  // 1. Fetch metrics from PostgreSQL database via Prisma
-  const [totalCount, newCount, inProgressCount, closedCount, recentInquiries] = await Promise.all([
-    prisma.inquiry.count(),
-    prisma.inquiry.count({ where: { status: "NEW" } }),
-    prisma.inquiry.count({ where: { status: "IN_PROGRESS" } }),
-    prisma.inquiry.count({ where: { status: "CLOSED" } }),
-    prisma.inquiry.findMany({
-      orderBy: { createdAt: "desc" },
-      take: 5,
-    }),
-  ]);
+  console.log("DashboardPage [Start]: Executing environment checks...");
+  try {
+    checkEnvironmentVariables();
+    console.log("DashboardPage [Success]: Environment checks passed.");
+  } catch (err) {
+    const errMessage = err instanceof Error ? err.message : String(err);
+    console.error("DashboardPage [Error]: Environment checks failed!", err);
+    return (
+      <DashboardErrorState
+        title="Configuration Error"
+        message={errMessage}
+      />
+    );
+  }
+
+  console.log("DashboardPage [Start]: Connecting and querying database metrics...");
+
+  let totalCount = 0;
+  let newCount = 0;
+  let inProgressCount = 0;
+  let closedCount = 0;
+  let recentInquiries: Inquiry[] = [];
+  let dbError: string | null = null;
+
+  try {
+    const [tCount, nCount, ipCount, cCount, rInquiries] = await Promise.all([
+      prisma.inquiry.count().then(res => { console.log("DashboardPage [Query]: count inquiries success"); return res; }),
+      prisma.inquiry.count({ where: { status: "NEW" } }).then(res => { console.log("DashboardPage [Query]: count NEW inquiries success"); return res; }),
+      prisma.inquiry.count({ where: { status: "IN_PROGRESS" } }).then(res => { console.log("DashboardPage [Query]: count IN_PROGRESS inquiries success"); return res; }),
+      prisma.inquiry.count({ where: { status: "CLOSED" } }).then(res => { console.log("DashboardPage [Query]: count CLOSED inquiries success"); return res; }),
+      prisma.inquiry.findMany({
+        orderBy: { createdAt: "desc" },
+        take: 5,
+      }).then(res => { console.log("DashboardPage [Query]: findMany inquiries success"); return res; }),
+    ]);
+    totalCount = tCount;
+    newCount = nCount;
+    inProgressCount = ipCount;
+    closedCount = cCount;
+    recentInquiries = rInquiries;
+    console.log("DashboardPage [Success]: Queries resolved successfully.");
+  } catch (err) {
+    console.error("DashboardPage [Error]: Database queries execution failed!", err);
+    dbError = err instanceof Error ? err.message : String(err);
+  }
+
+  if (dbError) {
+    return (
+      <DashboardErrorState
+        title="Database Connection Error"
+        message={`An error occurred while communicating with the database. Please ensure your database is active and the connection string is valid. Details: ${dbError}`}
+      />
+    );
+  }
 
   // Helper to resolve status badge colors
   const getStatusBadge = (status: string) => {

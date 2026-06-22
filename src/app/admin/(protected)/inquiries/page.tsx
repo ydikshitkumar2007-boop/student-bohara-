@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { InquiryFilters } from "./InquiryFilters";
-import { Prisma } from "@prisma/client";
+import { Prisma, Inquiry } from "@prisma/client";
 import { 
   Inbox, 
   User, 
@@ -10,6 +10,8 @@ import {
   Building, 
   Briefcase 
 } from "lucide-react";
+
+import { DashboardErrorState } from "@/components/custom/DashboardErrorState";
 
 export const dynamic = "force-dynamic";
 
@@ -49,10 +51,29 @@ export default async function InquiriesPage({ searchParams }: PageProps) {
   }
 
   // 2. Fetch matched rows from database
-  const inquiries = await prisma.inquiry.findMany({
-    where: whereClause,
-    orderBy: { createdAt: "desc" },
-  });
+  let inquiries: Inquiry[] = [];
+  let dbError: string | null = null;
+
+  try {
+    console.log("InquiriesPage [Start]: Executing findMany queries...");
+    inquiries = await prisma.inquiry.findMany({
+      where: whereClause,
+      orderBy: { createdAt: "desc" },
+    });
+    console.log(`InquiriesPage [Success]: Found ${inquiries.length} rows.`);
+  } catch (err) {
+    console.error("InquiriesPage [Error]: Database query failed!", err);
+    dbError = err instanceof Error ? err.message : String(err);
+  }
+
+  if (dbError) {
+    return (
+      <DashboardErrorState
+        title="Database Connection Error"
+        message={`An error occurred while fetching the inquiries list. Technical Details: ${dbError}`}
+      />
+    );
+  }
 
   // Helper to resolve status badge styling
   const getStatusBadge = (status: string) => {
